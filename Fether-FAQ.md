@@ -35,6 +35,20 @@ When running Fether in the development environment on macOS Mojave, you need to 
 
 The background process to synchronize the blockchain does not restart from scratch. The sync continues from the point it was left at the last time Fether was launched.
 
+### Why isn't Fether syncing?
+
+In this example we will assume that you have encountered the issue after:
+
+- Starting Fether with the default configuration and it has connected to the Ethereum Mainnet (`foundation`).
+- The blockchain database that has been stored on your device has synchronised up to certain block.
+
+You may encounter issues syncing Fether on any network. You know you have the issue due to a corrupt database when:
+
+- In the Fether window on the page with the title "Accounts" it displays "Syncing... foundation" at the bottom left but without showing a percentage progress such as "Syncing... (x%) foundation".
+- In the [logs](#how-to-access-logs-to-troubleshoot-errors) the block number that is currently being synced is no longer changing and is not the [latest Ethereum Mainnet block number](https://blockscout.com/eth/mainnet).
+
+To resolve the issue simply delete the corrupted blockchain database for that network in the [subdirectory where the light client blockchain database used by Fether is stored](#where-is-the-light-client-blockchain-database-used-by-fether-stored). Then restart Fether and it will start synchronizing with that network from scratch.
+
 ### How to add my ERC-20 Token to Fether?
 
 We use the following repository to get the token list: [https://github.com/ethereum-lists/tokens](https://github.com/ethereum-lists/tokens).
@@ -72,9 +86,9 @@ Fether binary executable files are stored here:
 - Windows:
   - Parity Fether: `C:\Users\fether\AppData\Local\Programs\fether\fether`
 
-### Where is the light client blockchain data used by Fether stored?
+### Where is the light client blockchain database used by Fether stored?
 
-Light client blockchain data for Fether is stored in chain-specific subdirectories within the Parity Ethereum 'chains_light' folder. You will find them here:
+Light client blockchain databases for Fether are stored in chain-specific subdirectories within the Parity Ethereum 'chains_light' folder. You will find them here:
 
 - macOS: `~/Library/Application\ Support/io.parity.ethereum/chains_light`
 - Linux: `$HOME/.local/share/io.parity.ethereum/chains_light`
@@ -121,6 +135,20 @@ You can pass specific flags (such as `--chain`) for Fether to launch the underly
 # Launching Fether with a Parity Ethereum light client node on Ropsten
 $ /path/to/fether --chain ropsten --light
 ```
+
+Fether only supports networks that are compatible with running a light client node using the `--light` option of the Fether CLI that is shown above, and as mentioned in the FAQ [What networks are supported by Fether?](#what-networks-are-supported-by-fether?).
+
+### What networks are supported by Fether?
+
+Fether currently supports: 
+- Ethereum Mainnet
+- Ethereum Classic
+- Kovan Testnet
+- Ropsten Testnet
+
+Görli Testnet support will be added soon.
+
+Read here about [how to launch Fether on a different network](#how-to-launch-fether-on-a-different-network).
 
 ### How to launch Fether with a separately launched Parity Ethereum node?
 
@@ -263,3 +291,51 @@ If Fether is otherwise unresponsive or does not load then please follow the step
 #### Production Environment
 
 Please follow the steps in the FAQ [How to access logs to troubleshoot errors](#how-to-access-logs-to-troubleshoot-errors).
+
+### How to switch between languages that Fether supports?
+
+In the Fether window you can switch between supported languages by simply right-clicking the Fether window to reveal the Fether menu, then choosing the menu item 'Preferences > Language', and selecting one of the available languages from the list (i.e. English).
+
+The Fether window will then automatically refresh and its contents will now be in the language you chose. The active language that you chose will now have a tick next to it in the menu.
+
+### How to add support for a new language to Fether?
+
+Contributors are invited to create a Pull Request that translates Fether other languages.
+
+English language support is currently the default.
+
+#### Example: Add language support for the German language
+
+**Solution:** See the following Pull Request that shows the changes that were required to add German language support https://github.com/paritytech/fether/pull/464
+
+
+1) Find the [internationalisation abbreviation](https://www.w3.org/International/O-charset-lang.html) of the new language that you want to add. In this example the new language will be referred to as <LANG>. Example: 'de' for Deutsch (German), or 'en' for English. So if you wanted to add the French language then <LANG> would be 'fr'.
+2) Convert the Fether menu into the new language as follows.
+* Create a file named <LANG>.json within the fether-electron folder. Example: fether-electron/src/main/app/menu/i18n/locales/de.json.
+* Copy and paste into that file the contents of the existing English file that is located in fether-electron/src/main/app/menu/i18n/locales/en.json.
+* Find someone who is a native speaker of the new language to translate each **'value'** (DO NOT translate the 'keys', they must remain in English) into the new language.
+* Update fether-electron/src/main/app/menu/i18n/locales/index.js. See how it was done in the 'Solution' mentioned above.
+* Update fether-electron/src/main/app/menu/template/index.js:
+  * Add an item for the new language as a value of the `submenu`.
+* Update fether-electron/src/main/app/menu/i18n/index.js:
+  * Import the <LANG> that you added in the 'locales' subdirectory.
+  * Add the new language as a fallback language in the desired order to the `fallbackLng`.
+  * Add a key named <LANG> to `resources` using the imported <LANG>.json file as the namespace.
+3) Language conversion of the Fether window contents to the new language.
+* Create a file named <LANG>.json within the fether-react folder. Example: fether-react/src/i18n/locales/de.json. Copy/paste into it the contents of the English file fether-react/src/i18n/locales/en.json. Find a native speaker in that language to convert each **value** (not key) into the new language.
+* Update fether-react/src/i18n/locales/index.js.
+* Update fether-react/src/i18n/index.js, which includes:
+  * Import the <LANG> from the 'locales' subdirectory.
+  * Adding the new language as a fallback language in the desired order to the [`fallbackLng`](https://www.i18next.com/principles/fallback#fallback-language).
+  * Add a subkey named <LANG> under the `resources` key using the imported <LANG>.json file as the namespace. See how it was done in the 'Solution' mentioned above.
+
+#### Limitations
+
+* After choosing a new language to switch to, the Fether window will refresh automatically and the contents of Fether will now be in the new language, **except** for the menu items "Show/Hide Fether" and "Quit" that are shown when you click the taskbar icon. These menu items will only change to the language that you chose after you **restart** Fether.
+
+* The Fether Terms & Conditions are only available in English.
+
+* Full support for translating the UI is provided, however only limited support is provided for translating the logs is provided. For example the following files are not translated:
+  * fether-electron/src/main/app/menu/i18n/index.js
+  * fether-react/src/i18n/index.js
+  * fether/scripts/fetch-latest-parity.js

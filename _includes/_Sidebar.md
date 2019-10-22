@@ -82,8 +82,8 @@
   - [Wire Protocol](Whisper-PoC-2-Wire-Protocol)
 
 ### Hacking
-- [Coding Guide](Coding-guide)
-- [Known Issues](Known-Issues-Priorities)
+- [Parity Ethereum Style Guide](Parity-Ethereum-Style-Guide)
+- [Known Issues](https://github.com/paritytech/parity-ethereum/issues) <i class="fa fa-external-link"></i>
 - [Fuzz Testing](Fuzz-Testing)
 - [Labeling](Labelling)
 - [Release Notes](https://github.com/paritytech/parity-ethereum/blob/master/CHANGELOG.md) <i class="fa fa-external-link"></i>
@@ -113,6 +113,7 @@
 
 ## Parity Signer Mobile App
 - [Overview](Parity-Signer-Mobile-App)
+- [Tutorial w/ Polkadot-js apps on Kusama](Parity-Signer-Mobile-App-Apps-Kusama-tutorial)
 - [Tutorial w/ Fether](Parity-Signer-Mobile-App-Fether-tutorial)
 - [Tutorial w/ MyCrypto](Parity-Signer-Mobile-App-MyCrypto-tutorial)
 

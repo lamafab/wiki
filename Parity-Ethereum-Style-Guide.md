@@ -1,10 +1,10 @@
 ---
-title: Style Guide for Rust in Substrate
+title: Style Guide for Rust in Parity Ethereum
 ---
 
 # Formatting
 
-- Indent using tabs.
+- Indent using tabs
 - Lines should be longer than 100 characters long only in exceptional circumstances and certainly no longer than 120. For this purpose, tabs are considered 4 characters wide.
 - Indent levels should be greater than 5 only in exceptional circumstances and certainly no greater than 8. If they are greater than 5, then consider using `let` or auxiliary functions in order to strip out complex inline expressions.
 - Never have spaces on a line prior to a non-whitespace character
@@ -36,8 +36,8 @@ fn calculate(
 	)) / (2 * some_long_variable_a)
 }
 ```
-- `where` is indented, and its items are indented one further.
-- Argument lists or function invocations that are too long to fit on one line are indented similarly to code blocks, and once one param is indented in such a way, all others should be, too. Run-on parameter lists are also acceptable for single-line run-ons of basic function calls.
+- `where` is indented, and its items are indented one further
+- Argument lists or function invocations too long to fit on one line are indented similarly to code blocks, and once one param is indented in such a way, all others should be, too. Run-on parameter lists are also acceptable for single-line run-ons of basic function calls.
 
 ```rust
 // OK
@@ -55,6 +55,7 @@ fn foo(really_long_parameter_name_1: SomeLongTypeName, really_long_parameter_nam
 	shrt_nm_1: u8, shrt_nm_2: u8) {
 	...
 }
+
 ```
 
 ```rust
@@ -126,11 +127,3 @@ let mut target_path =
 		qed"
 	);
 ```
-
-- Unsafe code requires explicit proofs just as panickers do. When introducing unsafe code,
-consider tradeoffs between efficiency on one hand and reliability, maintenance costs, and security on the other. 
-Here is a list of questions that may help evaluating the tradeoff while preparing or reviewing a PR:
-    - how much more performant or compact the resulting code will be using unsafe code, 
-    - how likely is it that invariants could be violated, 
-    - are issues stemming from the use of unsafe code caught by existing tests/tooling,
-    - what are the consequences if the problems slip into production.
