@@ -2183,8 +2183,8 @@ Returns a list of transactions currently in the queue.
 
 #### Parameters
 
-0. `limit` - The max amount of transactions to return. If there should be no limit and `filter` is specified, this value must be `null`.
-1. `filter` - Filter transactions.
+0. `limit` - (optional) The max amount of transactions to return. If there should be no limit and `filter` is specified, this value must be `null`.
+1. `filter` - (optional) Filter transactions.
     - `from`: - The address the transaction is sent from.
         - `eq`: `Address`  - equal to
     - `to`: - The address the transaction is directed to.
